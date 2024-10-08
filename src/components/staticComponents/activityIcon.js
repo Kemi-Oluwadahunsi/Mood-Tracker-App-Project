@@ -1,0 +1,31 @@
+import {
+  Dumbbell,
+  Briefcase,
+  Users,
+  BookOpen,
+  Meh,
+  Palette,
+  Utensils,
+  Film,
+  Gamepad,
+  Plane,
+  ShoppingBag,
+  Music,
+  Moon,
+} from "lucide-react";
+
+export const activityIcon = {
+  Exercise: Dumbbell,
+  "Good sleep": Moon,
+  Work: Briefcase,
+  Socializing: Users,
+  Reading: BookOpen,
+  Meditation: Meh,
+  Hobby: Palette,
+  Eating: Utensils,
+  "Watching Movies": Film,
+  Gaming: Gamepad,
+  Traveling: Plane,
+  Shopping: ShoppingBag,
+  "Listening to Music": Music,
+};

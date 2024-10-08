@@ -1,0 +1,51 @@
+export const moodSuggestions = {
+  Happy: [
+    "Celebrate your good mood",
+    "Share your happiness with others",
+    "Try a new hobby",
+    "Express gratitude",
+    "Set new goals",
+  ],
+  Excited: [
+    "Channel your energy into a creative project",
+    "Plan an adventure",
+    "Share your enthusiasm with friends",
+    "Start learning something new",
+    "Write down your ideas",
+  ],
+  Calm: [
+    "Practice mindfulness",
+    "Do some light stretching",
+    "Listen to soothing music",
+    "Enjoy a relaxing hobby",
+    "Spend time in nature",
+  ],
+  Relaxed: [
+    "Read a book",
+    "Take a leisurely walk",
+    "Practice deep breathing",
+    "Enjoy a warm bath",
+    "Do some gentle yoga",
+  ],
+  Neutral: [
+    "Take a short walk",
+    "Write in a journal",
+    "Call a friend",
+    "Try a new recipe",
+    "Organize your space",
+  ],
+  Sad: [
+    "Talk to someone you trust",
+    "Practice self-care",
+    "Watch a comforting movie",
+    "Listen to uplifting music",
+    "Engage in light exercise",
+  ],
+  Angry: [
+    "Take deep breaths",
+    "Exercise to release tension",
+    "Write down your feelings",
+    "Practice progressive muscle relaxation",
+    "Engage in a calming activity",
+  ],
+};
