@@ -28,6 +28,8 @@ export const MoodProvider = ({ children }) => {
     return storedActivities ? JSON.parse(storedActivities) : [];
   });
 
+  const [currentMoodEntry, setCurrentMoodEntry] = useState(null);
+
   useEffect(() => {
     localStorage.setItem("moodEntries", JSON.stringify(moodEntries));
   }, [moodEntries]);
@@ -41,27 +43,16 @@ export const MoodProvider = ({ children }) => {
   }, [activities]);
 
   const addMoodEntry = useCallback((entry) => {
-    setMoodEntries((prevEntries) => {
-      const newEntries = [...prevEntries, entry];
-      localStorage.setItem("moodEntries", JSON.stringify(newEntries));
-      return newEntries;
-    });
+    setMoodEntries((prevEntries) => [...prevEntries, entry]);
+    setCurrentMoodEntry(null);
   }, []);
 
   const addCustomMood = useCallback((mood) => {
-    setCustomMoods((prevMoods) => {
-      const newMoods = [...prevMoods, mood];
-      localStorage.setItem("customMoods", JSON.stringify(newMoods));
-      return newMoods;
-    });
+    setCustomMoods((prevMoods) => [...prevMoods, mood]);
   }, []);
 
   const addActivity = useCallback((activity) => {
-    setActivities((prevActivities) => {
-      const newActivities = [...prevActivities, activity];
-      localStorage.setItem("activities", JSON.stringify(newActivities));
-      return newActivities;
-    });
+    setActivities((prevActivities) => [...prevActivities, activity]);
   }, []);
 
   const updateMoodEntry = useCallback((date, updates) => {
@@ -82,6 +73,15 @@ export const MoodProvider = ({ children }) => {
     return [...defaultMoods, ...customMoods];
   }, [customMoods]);
 
+   const updateCurrentMoodEntry = useCallback((updater) => {
+     setCurrentMoodEntry((prev) => {
+       if (typeof updater === "function") {
+         return updater(prev);
+       }
+       return { ...prev, ...updater };
+     });
+   }, []);
+
   return (
     <MoodContext.Provider
       value={{
@@ -94,6 +94,9 @@ export const MoodProvider = ({ children }) => {
         getAllMoods,
         updateMoodEntry,
         removeMoodEntry,
+        currentMoodEntry,
+        setCurrentMoodEntry,
+        updateCurrentMoodEntry,
       }}
     >
       {children}

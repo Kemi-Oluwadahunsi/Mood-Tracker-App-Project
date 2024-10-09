@@ -1,14 +1,7 @@
-import React, {
-  useState,
-  useContext,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useState, useContext, useCallback, useMemo } from "react";
 import { MoodContext } from "../contexts/MoodContext";
-import { activityIcon} from "./staticComponents/activityIcon";
+import { activityIcon } from "./staticComponents/activityIcon";
 import ActivityButton from "./staticComponents/ActivityButton";
-
 
 const defaultActivities = [
   "Exercise",
@@ -27,36 +20,22 @@ const defaultActivities = [
 ];
 
 function ActivityTracker() {
-  const { moodEntries, updateMoodEntry, activities, addActivity } =
+  const { activities, addActivity, currentMoodEntry, updateCurrentMoodEntry } =
     useContext(MoodContext);
-  const [selectedActivities, setSelectedActivities] = useState([]);
   const [customActivity, setCustomActivity] = useState("");
-
-  const lastEntry = useMemo(() => {
-    return moodEntries.length > 0 ? moodEntries[moodEntries.length - 1] : null;
-  }, [moodEntries]);
-
-  useEffect(() => {
-    if (lastEntry && lastEntry.activities) {
-      setSelectedActivities(lastEntry.activities);
-    }
-  }, [lastEntry]);
 
   const handleActivityToggle = useCallback(
     (activity) => {
-      setSelectedActivities((prev) => {
-        const newActivities = prev.includes(activity)
-          ? prev.filter((a) => a !== activity)
-          : [...prev, activity];
-
-        if (lastEntry) {
-          updateMoodEntry(lastEntry.date, { activities: newActivities });
-        }
-
-        return newActivities;
+      updateCurrentMoodEntry((prev) => {
+        if (!prev) return null;
+        const currentActivities = prev.activities || [];
+        const newActivities = currentActivities.includes(activity)
+          ? currentActivities.filter((a) => a !== activity)
+          : [...currentActivities, activity];
+        return { ...prev, activities: newActivities };
       });
     },
-    [lastEntry, updateMoodEntry]
+    [updateCurrentMoodEntry]
   );
 
   const handleCustomActivityAdd = useCallback(
@@ -64,23 +43,28 @@ function ActivityTracker() {
       e.preventDefault();
       if (customActivity && !activities.includes(customActivity)) {
         addActivity(customActivity);
-        setSelectedActivities((prev) => {
-          const newActivities = [...prev, customActivity];
-          if (lastEntry) {
-            updateMoodEntry(lastEntry.date, { activities: newActivities });
-          }
-          return newActivities;
+        updateCurrentMoodEntry((prev) => {
+          if (!prev) return null;
+          const currentActivities = prev.activities || [];
+          return {
+            ...prev,
+            activities: [...currentActivities, customActivity],
+          };
         });
         setCustomActivity("");
       }
     },
-    [customActivity, activities, addActivity, lastEntry, updateMoodEntry]
+    [customActivity, activities, addActivity, updateCurrentMoodEntry]
   );
 
   const allActivities = useMemo(
     () => [...defaultActivities, ...activities],
     [activities]
   );
+
+  if (!currentMoodEntry || !currentMoodEntry.mood) {
+    return null;
+  }
 
   return (
     <div className="mb-8">
@@ -93,8 +77,8 @@ function ActivityTracker() {
             key={activity}
             activity={activity}
             Icon={activityIcon[activity]}
-            isSelected={selectedActivities.includes(activity)}
-            onToggle={handleActivityToggle}
+            isSelected={currentMoodEntry.activities?.includes(activity)}
+            onToggle={() => handleActivityToggle(activity)}
           />
         ))}
       </div>

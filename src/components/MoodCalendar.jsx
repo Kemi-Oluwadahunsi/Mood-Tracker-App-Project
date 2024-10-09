@@ -1,5 +1,5 @@
 import React, { useState, useContext, useMemo } from "react";
-import { MoodContext } from "../hooks/MoodContext";
+import { MoodContext } from "../contexts/MoodContext";
 import {
   format,
   startOfMonth,
@@ -9,7 +9,7 @@ import {
   isSameMonth,
   addDays,
 } from "date-fns";
-import CalendarDay from "./pages/staticPages/CalendarDay";
+import CalendarDay from "./staticComponents/CalendarDay";
 
 CalendarDay.displayName = "CalendarDay";
 
